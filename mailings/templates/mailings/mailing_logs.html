@@ -1,0 +1,35 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<div class="col">
+    {% if object_list %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Рассылка</th>
+            <th scope="col">Дата и время последней попытки</th>
+            <th scope="col">Статус попытки</th>
+            <th scope="col">Ответ сервера</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list %}
+        <tr>
+            <th scope="row">{{object.pk}}</th>
+            <td>{{object.mailing}}</td>
+            <td>{{object.timestamp}}</td>
+            <td>{{object.status}}</td>
+            <td>{{object.response}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h5>
+        Рассылка еще не отправлялась
+    </h5>
+    {% endif %}
+</div>
+
+
+{% endblock %}

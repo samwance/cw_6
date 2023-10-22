@@ -1,0 +1,49 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+<div class="col">
+    <div class="card mb-1 box-shadow">
+        <div class="card-body">
+            <p>Начало рассылки: {{object.start_date}}</p>
+            <p>Окончание рассылки: {{object.end_date}}</p>
+            <p>Периодичность:
+                {% if object.periodicity == 'daily' %}
+                Ежедневно
+                {% endif %}
+                {% if object.periodicity == 'weekly' %}
+                Еженедельно
+                {% endif %}
+                {% if object.periodicity == 'monthly' %}
+                Ежемесячно
+                {% endif %}
+            </p>
+            <p>Статус:
+                {% if object.status == 'created' %}
+                    Создана
+                    {% endif %}
+                    {% if object.status == 'started' %}
+                    Запущена
+                    {% endif %}
+                    {% if object.status == 'completed' %}
+                    Завершена
+                    {% endif %}
+                </p>
+            <p>Тема сообщения: {{object.message}}
+                <br>Содержание сообщения: {{object.message.content}}</p>
+            <p>Клиенты:
+                {% for client in object.clients.all %}
+                <li>{{ client }}</li>
+                {% endfor %}
+            </p>
+            <p>
+                <a href="{% url 'mailings:mailing_logs' object.pk %}" class="btn btn-outline-primary" role="button">Просмотреть логи</a>
+            </p>
+            {% if user.is_staff and user.groups.name == 'moderator' %}
+            <p>
+                <a href="{% url 'mailings:mailing_logs' object.pk %}" class="btn btn-outline-primary" role="button">Отключить</a>
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

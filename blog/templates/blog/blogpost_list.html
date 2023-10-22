@@ -1,0 +1,46 @@
+{% extends 'mailings/base.html' %}
+{% load my_tags %}
+{% block content %}
+{% if not request.user|has_group:"moderator" %}
+<div class="col-12">
+    <p><a class="btn btn-outline-primary" href="{% url 'blog:create' %}" role="button">Добавить запись</a></p>
+</div>
+{% endif %}
+
+{% for object in object_list %}
+<div class="col-6">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">{{object.title}}</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ object.preview_image | media_url}}" alt="" style="max-width: 75%;">
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>{{object.content|truncatechars:100}}</li>
+                <li>Дата публикации: {{object.created_at}}</li>
+                <li>Количество просмотров: {{object.views_count}}</li>
+                <li>Автор: {{object.owner}}</li>
+
+            </ul>
+            <div class="btn-group">
+                <a href="/blog/view/{{object.pk}}" class="btn btn-outline-primary" role="button">Читать</a>
+                {% if object.owner == request.user or request.user.is_superuser %}
+                <a href="{% url 'blog:edit' object.pk %}" class="btn btn-outline-success"
+                   role="button">Редактировать</a>
+                <a href="{% url 'blog:delete' object.pk %}" class="btn btn-outline-danger" role="button">Удалить</a>
+                {% endif %}
+                {% if request.user|has_group:"content_manager" %}
+                <a href="{% url 'blog:edit' object.pk %}" class="btn btn-outline-success"
+                   role="button">Редактировать</a>
+                <a href="{% url 'blog:delete' object.pk %}" class="btn btn-outline-danger" role="button">Удалить</a>
+                {% endif %}
+
+            </div>
+            <p>
+        </div>
+
+    </div>
+
+</div>
+{% endfor %}
+{% endblock %}

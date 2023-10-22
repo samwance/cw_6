@@ -1,0 +1,30 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+{% for object in object_list %}
+<div class="col-6">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">{{object.fullname}}</h4>
+        </div>
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>ID: {{object.pk}}</li>
+                <li>Email: {{object.email}}</li>
+                <li>Фамилия: {{object.first_name}}</li>
+                <li>Имя: {{object.last_name}}</li>
+
+            </ul>
+            <p>
+                {% if object.is_active %}
+                <a href="{% url 'users:block_user' object.pk %}" class="btn btn-outline-danger" role="button">Блокировать</a>
+                {% else %}
+                <a href="{% url 'users:unblock_user' object.pk %}" class="btn btn-outline-success" role="button">Разблокировать</a>
+                {% endif %}
+
+            </p>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'mailings/base.html' %}
+{% load my_tags %}
+
+{% block content %}
+{% if not request.user|has_group:"moderator" %}
+<div class="col-12">
+    <p><a class="btn btn-outline-primary" href="{% url 'mailings:create' %}" role="button">Создать рассылку</a></p>
+</div>
+{% endif %}
+
+{% for object in object_list %}
+<div class="col-6">
+    <div class="card mb-4 box-shadow">
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>ID: {{object.pk}}</li>
+                <li>Начало рассылки: {{object.start_date}}</li>
+                <li>Окончание рассылки: {{object.end_date}}</li>
+                <li>Периодичность:
+                    {% if object.periodicity == 'daily' %}
+                    Ежедневно
+                    {% endif %}
+                    {% if object.periodicity == 'weekly' %}
+                    Еженедельно
+                    {% endif %}
+                    {% if object.periodicity == 'monthly' %}
+                    Ежемесячно
+                    {% endif %}
+                </li>
+                <li>Статус:
+                    {% if object.is_active %}
+                    {% if object.status == 'created' %}
+                    Создана
+                    {% endif %}
+                    {% if object.status == 'started' %}
+                    Запущена
+                    {% endif %}
+                    {% if object.status == 'completed' %}
+                    Завершена
+                    {% endif %}
+                </li>
+                <li>
+                    {% else %}
+                    Отключена
+                    {% endif %}
+                </li>
+            </ul>
+            <div class="btn-group">
+                <a href="{% url 'mailings:view' object.pk %}" class="btn btn-outline-primary"
+                   role="button">Просмотреть</a>
+                {% if request.user|has_group:"moderator" %}
+                {% if object.is_active %}
+                <a href="{% url 'mailings:disable_mailing' object.pk %}" class="btn btn-outline-danger" role="button">Блокировать</a>
+                {% else %}
+                <a href="{% url 'mailings:enable_mailing' object.pk %}" class="btn btn-outline-success" role="button">Разблокировать</a>
+                {% endif %}
+                {% else %}
+                <a href="{% url 'mailings:edit' object.pk %}" class="btn btn-outline-success" role="button">Редактировать</a>
+                <a href="{% url 'mailings:delete' object.pk %}" class="btn btn-outline-danger" role="button">Удалить</a>
+                {% endif %}
+
+                {% if request.user.is_superuser%}
+                {% if object.is_active %}
+                <a href="{% url 'mailings:disable_mailing' object.pk %}" class="btn btn-outline-danger" role="button">Блокировать</a>
+                {% else %}
+                <a href="{% url 'mailings:enable_mailing' object.pk %}" class="btn btn-outline-success" role="button">Разблокировать</a>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

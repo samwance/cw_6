@@ -1,0 +1,36 @@
+{% extends 'mailings/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+{% if not request.user|has_group:"moderator" %}
+<div class="col-12">
+    <p><a class="btn btn-outline-primary" href="{% url 'mailings:create_client' %}" role="button">Добавить клиента</a>
+    </p>
+</div>
+{% endif %}
+
+{% for object in object_list %}
+<div class="col-6">
+    <div class="card mb-4 box-shadow">
+               <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{object.fullname}}</h4>
+                </div>
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>ID: {{object.pk}}</li>
+                <li>Email: {{object.email}}</li>
+                <li>Комментарий: {{object.comment}}</li>
+            </ul>
+            <div class="btn-group">
+                <a href="{% url 'mailings:view_client' object.pk %}" class="btn btn-outline-primary" role="button">Просмотреть</a>
+                {% if object.owner == request.user or request.user.is_superuser %}
+                <a href="{% url 'mailings:edit_client' object.pk %}" class="btn btn-outline-success" role="button">Редактировать</a>
+                <a href="{% url 'mailings:delete_client' object.pk %}" class="btn btn-outline-danger" role="button">Удалить</a>
+                {% endif %}
+            </div>
+            <p>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'mailings/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="col-4">
+    <div class="card border-primary mb-3">
+        <div class="card-body">
+            <h4 class="my-0 font-weight-normal mb-5 text-primary">Количество рассылок</h4>
+            <h1 class="my-0 font-weight-normal text-primary">{{ count_mailing }}</h1>
+        </div>
+    </div>
+</div>
+<div class="col-4">
+    <div class="card border-success mb-5">
+        <div class="card-body">
+            <h4 class="my-0 font-weight-normal mb-3 text-success">Количество активных рассылок</h4>
+            <h1 class="my-0 font-weight-normal text-success mb-1">{{ count_active_mailing }}</h1>
+        </div>
+    </div>
+</div>
+<div class="col-4">
+    <div class="card border-primary mb-3">
+        <div class="card-body">
+            <h4 class="my-0 font-weight-normal mb-5 text-primary">Количество клиентов</h4>
+            <h1 class="my-0 font-weight-normal text-primary">{{ count_user }}</h1>
+        </div>
+    </div>
+</div>
+
+<div class="col-12">
+    <h3 class="my-0 font-weight-normal mb-5 text-center" >Статьи блога</h3>
+</div>
+
+{% for object in object_list %}
+<div class="col-4">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">{{object.title}}</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ object.preview_image | media_url }}" alt="" style="max-width: 75%;">
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>{{object.content|truncatechars:100}}</li>
+            </ul>
+            <a href="/blog/view/{{object.pk}}" class="btn btn-lg btn-block btn-outline-primary" role="button">Читать</a>
+        </div>
+
+    </div>
+
+</div>
+{% endfor %}
+{% endblock %}
