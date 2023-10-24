@@ -40,5 +40,5 @@ urlpatterns = [
     path('view/<int:pk>/logs', get_mailing_logs, name='mailing_logs'),
     path('<int:pk>/disable_mailing', disable_mailing, name='disable_mailing'),
     path('<int:pk>/enable_mailing', enable_mailing, name='enable_mailing'),
-    path('', cache_page(60)(IndexView.as_view()), name='index'),
+    path('', IndexView.as_view(), name='index'),
 ]

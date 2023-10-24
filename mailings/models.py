@@ -20,7 +20,7 @@ class Clients(models.Model):
 
 
 class Messages(models.Model):
-    subject = models.CharField(verbose_name='Тема')
+    subject = models.CharField(max_length=100, verbose_name='Тема')
     content = models.TextField(verbose_name='Содержание')
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, **NULLABLE)
 
