@@ -13,7 +13,7 @@
 
 Клонирование проекта:
 ```
-git clone https://github.com/nataliamelnik138/course_work_6
+git clone https://github.com/samwance/cw_6
 ```
 Запуск:
 1. Создайте виртуальное окружение
